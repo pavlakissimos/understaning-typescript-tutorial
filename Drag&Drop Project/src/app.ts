@@ -9,10 +9,28 @@ app.appendChild(projectInputClone);
 
 // Create project
 
+interface ValidatorConfig {
+  [property: string]: {
+    [validatableProp: string]: string[]; // ['required', 'positive]
+  };
+}
+
+const registeredValidators: ValidatorConfig = {};
+
+function TruthyValue(target: any, propName: string) {
+  registeredValidators[target.constructor.name] = {
+    ...registeredValidators[target.constructor.name],
+    [propName]: [...registeredValidators[target.constructor.name][propName], "required"]
+  };
+}
+
 class Project {
-  title!: string;
-  description!: string;
-  people!: number;
+  @TruthyValue
+  title: string;
+  @TruthyValue
+  description: string;
+  @TruthyValue
+  people: number;
 
   constructor(title: string, description: string, people: number) {
     this.title = title;

@@ -6,9 +6,7 @@ function Logger(logString: string) {
 }
 
 function WithTemplate(template: string, hookId: string) {
-  return function<T extends { new (...args: any[]): { name: string } }>(
-    originalConstructor: T
-  ) {
+  return function<T extends { new (...args: any[]): { name: string } }>(originalConstructor: T) {
     return class extends originalConstructor {
       constructor(..._: any[]) {
         super();
@@ -52,11 +50,7 @@ function Log2(target: any, name: string, descriptor: PropertyDescriptor) {
   console.log(descriptor);
 }
 
-function Log3(
-  target: any,
-  name: string | symbol,
-  descriptor: PropertyDescriptor
-) {
+function Log3(target: any, name: string | symbol, descriptor: PropertyDescriptor) {
   console.log("Method decorator!");
   console.log(target);
   console.log(name);
@@ -95,11 +89,7 @@ class Product {
   }
 }
 
-function Autobind(
-  _target: any,
-  _methodName: string,
-  descriptor: PropertyDescriptor
-) {
+function Autobind(_target: any, _methodName: string, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value;
   const adjDescriptor: PropertyDescriptor = {
     configurable: true,
@@ -138,20 +128,14 @@ const registeredValidators: ValidatorConfig = {};
 function Required(target: any, propName: string) {
   registeredValidators[target.constructor.name] = {
     ...registeredValidators[target.constructor.name],
-    [propName]: [
-      ...registeredValidators[target.constructor.name][propName],
-      "required"
-    ]
+    [propName]: [...registeredValidators[target.constructor.name][propName], "required"]
   };
 }
 
 function PositiveNumber(target: any, propName: string) {
   registeredValidators[target.constructor.name] = {
     ...registeredValidators[target.constructor.name],
-    [propName]: [
-      ...registeredValidators[target.constructor.name][propName],
-      "positive"
-    ]
+    [propName]: [...registeredValidators[target.constructor.name][propName], "positive"]
   };
 }
 
