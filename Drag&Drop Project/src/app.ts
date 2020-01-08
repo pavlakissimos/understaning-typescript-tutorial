@@ -1,11 +1,33 @@
 // Show form
 
-const app = document.getElementById("app")!;
-const projectInput = document.getElementById("project-input") as HTMLTemplateElement;
+// const app = document.getElementById("app")!;
+// const projectInput = document.getElementById("project-input") as HTMLTemplateElement;
 
-const projectInputClone = document.importNode(projectInput.content, true);
+// const projectInputClone = document.importNode(projectInput.content, true);
 
-app.appendChild(projectInputClone);
+// app.appendChild(projectInputClone);
+
+class ProjectInput {
+  templateEl: HTMLTemplateElement;
+  hostEl: HTMLDivElement;
+  element: HTMLFormElement;
+
+  constructor() {
+    this.templateEl = document.getElementById("project-input")! as HTMLTemplateElement;
+    this.hostEl = document.getElementById("app")! as HTMLDivElement;
+
+    const projectInputClone = document.importNode(this.templateEl.content, true);
+    this.element = projectInputClone.firstElementChild as HTMLFormElement;
+
+    this.attach();
+  }
+
+  private attach() {
+    this.hostEl.insertAdjacentElement("afterbegin", this.element);
+  }
+}
+
+const projectInput = new ProjectInput();
 
 // Create project
 
@@ -24,13 +46,30 @@ function TruthyValue(target: any, propName: string) {
   };
 }
 
+function isValid(obj: any) {
+  const objValidatorConfig = registeredValidators[obj.constructor.name];
+  let isValid = true;
+
+  for (const prop in objValidatorConfig) {
+    for (const validator of objValidatorConfig[prop]) {
+      switch (validator) {
+        case "required":
+          isValid = isValid && !!obj[prop];
+          break;
+      }
+    }
+  }
+
+  return isValid;
+}
+
 class Project {
   @TruthyValue
-  title: string;
+  title!: string;
   @TruthyValue
-  description: string;
+  description!: string;
   @TruthyValue
-  people: number;
+  people!: number;
 
   constructor(title: string, description: string, people: number) {
     this.title = title;
@@ -57,5 +96,9 @@ form.addEventListener("submit", e => {
   const people = +peopleEl.value;
   const project = new Project(title, description, people);
 
-  project.addProject();
+  if (isValid(project)) {
+    project.addProject();
+  } else {
+    alert("Not valid values!");
+  }
 });
