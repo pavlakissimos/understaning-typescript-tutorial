@@ -11,8 +11,8 @@ interface Droppable {
 }
 
 enum ProjectStatus {
-  Active,
-  Finished
+  Active = "active",
+  Finished = "finished"
 }
 
 enum TemplateInsertPosition {
@@ -80,7 +80,18 @@ class ProjectState extends State<Project> {
     );
 
     this.projects.push(newProject);
+    this.updateListeners();
+  }
 
+  moveProject(projectId: string, newStatus: ProjectStatus) {
+    const project = this.projects.find(pr => pr.id === projectId);
+    if (project && project.status !== newStatus) {
+      project.status = newStatus;
+      this.updateListeners();
+    }
+  }
+
+  updateListeners() {
     for (const listenerFn of this.listeners) {
       listenerFn(this.projects.slice());
     }
@@ -236,8 +247,11 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> implements Drop
     }
   }
 
+  @Autobind
   dropHandler(e: DragEvent) {
-    console.log(e.dataTransfer!.getData("text/plain"));
+    const projectId = e.dataTransfer!.getData("text/plain");
+    const newStatus = this.type === "active" ? ProjectStatus.Active : ProjectStatus.Finished;
+    projectState.moveProject(projectId, newStatus);
   }
 
   @Autobind
