@@ -1,3 +1,7 @@
+import { Component } from "./base-components";
+import { TemplateInsertPosition } from "../models/project";
+import { Autobind } from "../decorators/autobind";
+
 // Project input class
 class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
   titleEl: HTMLInputElement;

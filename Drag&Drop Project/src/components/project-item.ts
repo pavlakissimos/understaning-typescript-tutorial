@@ -1,5 +1,10 @@
+import { Draggable } from "../interfaces/drag-drop";
+import { Component } from "./base-components";
+import { Project, TemplateInsertPosition } from "../models/project";
+import { Autobind } from "../decorators/autobind";
+
 // ProjectItem Class
-class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> implements Draggable {
+export class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> implements Draggable {
   private project: Project;
 
   get persons() {

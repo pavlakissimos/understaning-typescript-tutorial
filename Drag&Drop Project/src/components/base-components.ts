@@ -1,5 +1,7 @@
+import { TemplateInsertPosition } from "../models/project";
+
 // Component Base Class
-abstract class Component<T extends HTMLElement, U extends HTMLElement> {
+export abstract class Component<T extends HTMLElement, U extends HTMLElement> {
   templateEl: HTMLTemplateElement;
   hostEl: T;
   element: U;
