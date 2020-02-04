@@ -1,9 +1,11 @@
-import { Component } from "./base-components";
-import { TemplateInsertPosition } from "../models/project";
-import { Autobind } from "../decorators/autobind";
+import { Component } from "./base-components.js";
+import { TemplateInsertPosition } from "../models/project.js";
+import { Autobind } from "../decorators/autobind.js";
+import { Validatable, validate } from "./../utils/validation.js";
+import { projectState } from "./../state/project-state.js";
 
 // Project input class
-class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
+export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
   titleEl: HTMLInputElement;
   descriptionEl: HTMLTextAreaElement;
   peopleEl: HTMLInputElement;
